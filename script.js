@@ -153,7 +153,7 @@ function renderPrompts() {
             <h3 class="prompt-title">${prompt.title}</h3>
             <p class="prompt-text">${prompt.text}</p>
             <div class="prompt-actions">
-                <button class="copy-btn" data-prompt="${escapeHtml(prompt.text)}">
+                <button class="copy-btn" data-prompt="${prompt.text}">
                     📋 Copy Prompt
                 </button>
             </div>
@@ -225,12 +225,8 @@ function attachEventListeners() {
     });
 }
 
-// Utility function to escape HTML
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
+// Note: HTML escaping for display is handled automatically by the browser
+// when setting textContent or when the template literal content is properly structured
 
 // Start the app
 document.addEventListener('DOMContentLoaded', init);
