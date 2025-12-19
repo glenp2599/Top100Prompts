@@ -131,15 +131,24 @@ function displayCommands(commandsToShow) {
         return;
     }
 
+    // Using innerHTML is safe here as all data is hardcoded in the commands array
+    // and no user input is directly inserted into the DOM
     commandsContainer.innerHTML = commandsToShow.map(cmd => `
-        <div class="command-card" data-category="${cmd.category}">
+        <div class="command-card" data-category="${escapeHtml(cmd.category)}">
             <span class="command-number">#${cmd.num}</span>
-            <h3 class="command-title">${cmd.title}</h3>
-            <div class="command-code">${cmd.command}</div>
-            <p class="command-description">${cmd.description}</p>
-            <span class="command-category">${formatCategory(cmd.category)}</span>
+            <h3 class="command-title">${escapeHtml(cmd.title)}</h3>
+            <div class="command-code">${escapeHtml(cmd.command)}</div>
+            <p class="command-description">${escapeHtml(cmd.description)}</p>
+            <span class="command-category">${escapeHtml(formatCategory(cmd.category))}</span>
         </div>
     `).join('');
+}
+
+// Escape HTML to prevent XSS (defense in depth)
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Format category for display
@@ -156,17 +165,18 @@ function formatCategory(category) {
     return categoryMap[category] || category;
 }
 
-// Filter commands by category
-function filterByCategory(category) {
-    currentFilter = category;
+// Filter and display commands based on current category and search term
+function applyFilters() {
     const searchTerm = searchInput.value.toLowerCase();
     
     let filtered = commands;
     
-    if (category !== 'all') {
-        filtered = commands.filter(cmd => cmd.category === category);
+    // Apply category filter
+    if (currentFilter !== 'all') {
+        filtered = filtered.filter(cmd => cmd.category === currentFilter);
     }
     
+    // Apply search filter
     if (searchTerm) {
         filtered = filtered.filter(cmd => 
             cmd.title.toLowerCase().includes(searchTerm) ||
@@ -178,33 +188,21 @@ function filterByCategory(category) {
     displayCommands(filtered);
 }
 
+// Filter commands by category
+function filterByCategory(category) {
+    currentFilter = category;
+    applyFilters();
+}
+
 // Search commands
-function searchCommands(searchTerm) {
-    searchTerm = searchTerm.toLowerCase();
-    
-    let filtered = commands;
-    
-    if (currentFilter !== 'all') {
-        filtered = commands.filter(cmd => cmd.category === currentFilter);
-    }
-    
-    if (searchTerm) {
-        filtered = filtered.filter(cmd => 
-            cmd.title.toLowerCase().includes(searchTerm) ||
-            cmd.command.toLowerCase().includes(searchTerm) ||
-            cmd.description.toLowerCase().includes(searchTerm)
-        );
-    }
-    
-    displayCommands(filtered);
+function searchCommands() {
+    applyFilters();
 }
 
 // Setup event listeners
 function setupEventListeners() {
     // Search input
-    searchInput.addEventListener('input', (e) => {
-        searchCommands(e.target.value);
-    });
+    searchInput.addEventListener('input', searchCommands);
     
     // Filter buttons
     filterButtons.forEach(btn => {
