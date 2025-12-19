@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 100 Network Engineer Commands</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🌐 Top 100 Network Engineer Commands</h1>
+            <p class="subtitle">Essential commands every network engineer should know</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Search commands..." />
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="cisco">Cisco IOS</button>
+                <button class="filter-btn" data-category="linux">Linux</button>
+                <button class="filter-btn" data-category="troubleshooting">Troubleshooting</button>
+                <button class="filter-btn" data-category="routing">Routing</button>
+                <button class="filter-btn" data-category="switching">Switching</button>
+                <button class="filter-btn" data-category="security">Security</button>
+                <button class="filter-btn" data-category="monitoring">Monitoring</button>
+            </div>
+        </div>
+
+        <div id="commandsContainer" class="commands-grid"></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Top 100 Network Commands. A helpful reference for network engineers.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
