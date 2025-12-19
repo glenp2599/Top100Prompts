@@ -2,12 +2,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Glen's Prompt Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(90deg, #000428, #004e92);
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      color: #fcee09;
+      text-shadow: 2px 2px 4px #000;
+      cursor: pointer;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    nav a {
+      padding: 0.5rem 1rem;
+      background: #222;
+      color: #0ff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 5px #0ff;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 2rem;
+    }
+    section {
+      margin-bottom: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    h2, h3 {
+      color: #0ff;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
-<body style="font-family: Arial, sans-serif; background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); color: white; padding: 2rem;">
-  <h1>🎉 Glen's 100 Network Engineer Prompts 🎉</h1>
-  <p>This is your fully functional, real HTML landing page. If you're seeing this, your Netlify deploy worked! Now update this file with your full prompt dashboard when ready.</p>
+<body>
+  <h1 onclick="confetti();">🎉 Glen's Top 100 Prompts Dashboard 🎉</h1>
+  <nav>
+    <a href="#vmware">VMware Horizon</a>
+    <a href="#juniper">Juniper</a>
+    <a href="#m365">Microsoft 365</a>
+    <a href="#profileunity">ProfileUnity</a>
+    <a href="#arcticwolf">Arctic Wolf</a>
+    <a href="#barracuda">Barracuda</a>
+    <a href="#imanage">iManage</a>
+    <a href="#sql">SQL Reports</a>
+  </nav>
+  <input type="text" id="search" placeholder="Search prompts..." />
+  <div id="content"></div>
+
+  <script>
+    const prompts = {
+      "VMware Horizon": {
+        id: "vmware",
+        Troubleshooting: [
+          "Diagnose slow logon in non-persistent desktops.",
+          "Fix black screen on connection.",
+          "Repair Horizon agent failures.",
+          "Analyze VDI disconnect causes.",
+          "Profile corruption resolution script.",
+          "Logon storm resource impact analysis.",
+          "Check PCoIP/Blast statistics."
+        ],
+        Automation: [
+          "Script to refresh all desktop pools.",
+          "Generate daily session summary report.",
+          "Script to power off idle VMs.",
+          "Monitor agent heartbeat failures.",
+          "Auto-sync Horizon image versions.",
+          "Pull session duration stats."
+        ]
+      },
+      "Juniper": {
+        id: "juniper",
+        Troubleshooting: [
+          "Trace MAC address to port.",
+          "Check spanning tree root conflicts.",
+          "Fix VLAN trunking mismatch.",
+          "Diagnose port flapping events.",
+          "Monitor PoE failures.",
+          "Review LACP bundle health.",
+          "Identify rogue DHCP servers."
+        ],
+        Automation: [
+          "Script to push VLAN configs.",
+          "Backup switch configs nightly.",
+          "Audit unused ports weekly.",
+          "LLDP topology report generator.",
+          "Check firmware consistency.",
+          "Syslog/NTP audit tool."
+        ]
+      },
+      "Microsoft 365": {
+        id: "m365",
+        Troubleshooting: [
+          "Diagnose Outlook sync issues.",
+          "Check M365 license mismatches.",
+          "Investigate OneDrive file lock errors.",
+          "Review conditional access policy logs.",
+          "Audit mail transport rules.",
+          "Trace spoofed email headers.",
+          "Exchange Online mailbox delay diagnostics."
+        ],
+        Automation: [
+          "Bulk assign licenses with PowerShell.",
+          "Generate inactive user reports.",
+          "Script to clean mailbox retention tags.",
+          "OneDrive storage usage tracker.",
+          "Teams guest user export.",
+          "Audit MFA status for all users."
+        ]
+      }
+    };
+
+    const content = document.getElementById('content');
+    const searchBox = document.getElementById('search');
+
+    function render(filter = '') {
+      content.innerHTML = '';
+      for (const [platform, data] of Object.entries(prompts)) {
+        const section = document.createElement('section');
+        section.id = data.id;
+
+        const title = document.createElement('h2');
+        title.textContent = platform;
+        section.appendChild(title);
+
+        for (const category of ['Troubleshooting', 'Automation']) {
+          const catTitle = document.createElement('h3');
+          catTitle.textContent = `${category} Workflows`;
+          section.appendChild(catTitle);
+
+          const ul = document.createElement('ul');
+          for (const prompt of data[category]) {
+            if (prompt.toLowerCase().includes(filter.toLowerCase())) {
+              const li = document.createElement('li');
+              li.textContent = prompt;
+              ul.appendChild(li);
+            }
+          }
+          section.appendChild(ul);
+        }
+
+        content.appendChild(section);
+      }
+    }
+
+    searchBox.addEventListener('input', () => render(searchBox.value));
+    render();
+  </script>
 </body>
 </html>
